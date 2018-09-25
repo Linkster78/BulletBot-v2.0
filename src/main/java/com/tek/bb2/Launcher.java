@@ -7,7 +7,7 @@ import com.tek.bb2.log.ClientLogger;
 public class Launcher {
 	
 	public static void main(String[] args) {
-		Config config = Config.load("/resources/config.json");
+		Config config = Config.load("config.json");
 		
 		if(config.valid()) {
 			BulletBot bulletBot = new BulletBot(config);
