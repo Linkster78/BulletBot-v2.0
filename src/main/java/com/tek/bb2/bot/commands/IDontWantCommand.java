@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.tek.bb2.bot.BulletBot;
+import com.tek.bb2.util.CommandCategories;
 
 import net.dv8tion.jda.core.entities.Role;
 

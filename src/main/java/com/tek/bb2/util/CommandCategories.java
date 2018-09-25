@@ -1,4 +1,4 @@
-package com.tek.bb2.bot.commands;
+package com.tek.bb2.util;
 
 import com.jagrosh.jdautilities.command.Command.Category;
 

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.tek.bb2.util.CommandCategories;
 
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;

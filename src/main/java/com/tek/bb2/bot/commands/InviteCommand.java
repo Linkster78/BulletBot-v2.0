@@ -1,6 +1,7 @@
 package com.tek.bb2.bot.commands;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.tek.bb2.util.CommandCategories;
 
 public class InviteCommand extends BotCommand {
 

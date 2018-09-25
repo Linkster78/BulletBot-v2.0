@@ -3,6 +3,7 @@ package com.tek.bb2.bot.commands;
 import java.util.Random;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.tek.bb2.util.CommandCategories;
 
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Member;

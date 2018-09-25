@@ -1,5 +1,7 @@
 package com.tek.bb2.bot;
 
+import java.awt.Color;
+
 import javax.security.auth.login.LoginException;
 
 import com.jagrosh.jdautilities.command.CommandClient;
@@ -12,6 +14,7 @@ import com.tek.bb2.bot.commands.IDontWantCommand;
 import com.tek.bb2.bot.commands.IWantCommand;
 import com.tek.bb2.bot.commands.InviteCommand;
 import com.tek.bb2.bot.commands.PullCommand;
+import com.tek.bb2.bot.commands.UserInfoCommand;
 import com.tek.bb2.bot.commands.UserPickCommand;
 import com.tek.bb2.bot.events.GlobalEventListener;
 import com.tek.bb2.config.Config;
@@ -19,6 +22,7 @@ import com.tek.bb2.log.ClientLogger;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Guild;
 
@@ -52,6 +56,7 @@ public class BulletBot {
 		commandClientBuilder.addCommand(new IDontWantCommand());
 		commandClientBuilder.addCommand(new InviteCommand());
 		commandClientBuilder.addCommand(new UserPickCommand());
+		commandClientBuilder.addCommand(new UserInfoCommand());
 		commandClientBuilder.addCommand(new PullCommand());
 		
 		//FIX HELP MENU
@@ -84,6 +89,25 @@ public class BulletBot {
 	
 	public Guild getGuild() {
 		return jda.getGuildById(config.getGuild());
+	}
+	
+	public Color getColor(OnlineStatus status) {
+		switch(status){
+			case INVISIBLE:
+				return Color.gray;
+			case OFFLINE:
+				return Color.gray;
+			case DO_NOT_DISTURB:
+				return Color.red;
+			case IDLE:
+				return Color.yellow;
+			case ONLINE:
+				return Color.green;
+			case UNKNOWN:
+				return Color.magenta;
+			default:
+				return Color.magenta;
+		}
 	}
 	
 	public Config getConfig() {

@@ -16,12 +16,14 @@ public class HelpCommand implements Consumer<CommandEvent> {
 
 	@Override
 	public void accept(CommandEvent event) {
+		if(!BulletBot.getInstance().getConfig().getCommandChannels().contains(event.getTextChannel().getId())) return;
+		
 		String profileURL = BulletBot.getInstance().getJda().getSelfUser().getAvatarUrl();
 		String prefix = BulletBot.getInstance().getCommandClient().getPrefix();
 		
 		EmbedBuilder embedBuilder = new EmbedBuilder();
 		embedBuilder.setColor(Color.CYAN);
-		embedBuilder.setAuthor("BulletBot", profileURL);
+		embedBuilder.setAuthor("BulletBot", profileURL, profileURL);
 		embedBuilder.setThumbnail(profileURL);
 		embedBuilder.setTitle("Command List");
 		embedBuilder.setDescription("All of the currently available commands of BulletBot");
