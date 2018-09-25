@@ -4,12 +4,15 @@ import javax.security.auth.login.LoginException;
 
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
+import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.tek.bb2.bot.commands.AgreeCommand;
 import com.tek.bb2.bot.commands.CommandErrorHandler;
 import com.tek.bb2.bot.commands.HelpCommand;
 import com.tek.bb2.bot.commands.IDontWantCommand;
 import com.tek.bb2.bot.commands.IWantCommand;
 import com.tek.bb2.bot.commands.InviteCommand;
+import com.tek.bb2.bot.commands.PullCommand;
+import com.tek.bb2.bot.commands.UserPickCommand;
 import com.tek.bb2.bot.events.GlobalEventListener;
 import com.tek.bb2.config.Config;
 import com.tek.bb2.log.ClientLogger;
@@ -17,7 +20,7 @@ import com.tek.bb2.log.ClientLogger;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.entities.Guild;
 
 public class BulletBot {
 	
@@ -26,6 +29,7 @@ public class BulletBot {
 	
 	private JDA jda;
 	private CommandClient commandClient;
+	private EventWaiter eventWaiter;
 
 	public BulletBot(Config config) {
 		this.config = config;
@@ -43,7 +47,12 @@ public class BulletBot {
 		commandClientBuilder.setGame(Game.listening(config.getPresence()));
 		
 		//REGISTER COMMANDS
-		commandClientBuilder.addCommands(new AgreeCommand(), new IWantCommand(), new IDontWantCommand(), new InviteCommand());
+		commandClientBuilder.addCommand(new AgreeCommand());
+		commandClientBuilder.addCommand(new IWantCommand());
+		commandClientBuilder.addCommand(new IDontWantCommand());
+		commandClientBuilder.addCommand(new InviteCommand());
+		commandClientBuilder.addCommand(new UserPickCommand());
+		commandClientBuilder.addCommand(new PullCommand());
 		
 		//FIX HELP MENU
 		commandClientBuilder.setHelpConsumer(new HelpCommand());
@@ -54,11 +63,14 @@ public class BulletBot {
 		//BUILD COMMAND HANDLER
 		commandClient = commandClientBuilder.build();
 		
+		//BUILD EVENT WAITER
+		eventWaiter = new EventWaiter();
+		
 		//JDA
 		JDABuilder jdaBuilder = new JDABuilder(config.getToken());
 		
 		//REGISTER EVENT HANDLERS
-		jdaBuilder.addEventListener(commandClient, new GlobalEventListener());
+		jdaBuilder.addEventListener(commandClient, eventWaiter, new GlobalEventListener());
 		
 		//BUILD JDA
 		try {
@@ -70,8 +82,8 @@ public class BulletBot {
 		}
 	}
 	
-	public Role getRoleByID(String roleID) {
-		return jda.getRoleById(roleID);
+	public Guild getGuild() {
+		return jda.getGuildById(config.getGuild());
 	}
 	
 	public Config getConfig() {
@@ -84,6 +96,10 @@ public class BulletBot {
 	
 	public CommandClient getCommandClient() {
 		return commandClient;
+	}
+	
+	public EventWaiter getEventWaiter() {
+		return eventWaiter;
 	}
 	
 	public static BulletBot getInstance() {

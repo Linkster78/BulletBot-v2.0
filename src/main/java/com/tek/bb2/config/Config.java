@@ -12,13 +12,14 @@ import org.json.JSONObject;
 
 public class Config {
 	
-	private String token, owner, prefix, presence, welcomeChannel, optionalRolesChannel, memberRole, timeoutRole, modRole, adminRole;
+	private String token, owner, guild, prefix, presence, welcomeChannel, optionalRolesChannel, memberRole, timeoutRole, modRole, adminRole;
 	private List<String> commandChannels, requestableRoles;
 	
 	private Config(JSONObject config) {
 		if(config.has("token")) {
 			token = config.getString("token");
 			owner = config.getString("owner");
+			guild = config.getString("guild");
 			prefix = config.getString("prefix");
 			presence = config.getString("presence");
 			welcomeChannel = config.getString("welcomeChannel");
@@ -42,6 +43,10 @@ public class Config {
 	
 	public String getOwner() {
 		return owner;
+	}
+	
+	public String getGuild() {
+		return guild;
 	}
 	
 	public String getPrefix() {

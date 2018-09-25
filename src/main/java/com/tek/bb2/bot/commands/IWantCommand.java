@@ -10,7 +10,7 @@ import net.dv8tion.jda.core.entities.Role;
 public class IWantCommand extends BotCommand {
 
 	public IWantCommand() {
-		super("iwant", "Grants you the desired role", "<role>", Arrays.asList(BulletBot.getInstance().getConfig().getOptionalRolesChannel()));
+		super("iwant", "Grants you the desired role", "<role>", CommandCategories.ROLES, Arrays.asList(BulletBot.getInstance().getConfig().getOptionalRolesChannel()));
 	
 		this.category = new Category("Roles");
 	}

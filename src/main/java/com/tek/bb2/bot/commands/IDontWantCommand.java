@@ -10,9 +10,7 @@ import net.dv8tion.jda.core.entities.Role;
 public class IDontWantCommand extends BotCommand {
 
 	public IDontWantCommand() {
-		super("idontwant", "Revokes the desired role from you", "<role>", Arrays.asList(BulletBot.getInstance().getConfig().getOptionalRolesChannel()));
-	
-		this.category = new Category("Roles");
+		super("idontwant", "Revokes the desired role from you", "<role>", CommandCategories.ROLES, Arrays.asList(BulletBot.getInstance().getConfig().getOptionalRolesChannel()));
 	}
 
 	@Override

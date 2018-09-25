@@ -9,13 +9,14 @@ public abstract class BotCommand extends Command{
 	
 	private List<String> channels;
 	
-	public BotCommand(String name, String description, String arguments, List<String> channels, String... aliases) {
+	public BotCommand(String name, String description, String arguments, Category category, List<String> channels, String... aliases) {
 		this.guildOnly = true;
 		this.name = name;
 		this.help = description;
 		this.arguments = arguments;
 		this.channels = channels;
 		this.aliases = aliases;
+		this.category = category;
 	}
 	
 	@Override

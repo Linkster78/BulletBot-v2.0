@@ -5,7 +5,7 @@ import com.jagrosh.jdautilities.command.CommandEvent;
 public class InviteCommand extends BotCommand {
 
 	public InviteCommand() {
-		super("invite", "Displays the server invite", "", null);
+		super("invite", "Displays the server invite", "", CommandCategories.UTILITY, null);
 	
 		this.category = new Category("Utility");
 	}
