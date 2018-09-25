@@ -9,7 +9,7 @@ public class CommandErrorHandler implements CommandListener{
 	
 	@Override
 	public void onNonCommandMessage(MessageReceivedEvent event) {
-		if(event.getMessage().getContentRaw().startsWith(BulletBot.getInstance().getConfig().getPrefix())) {
+		if(event.getMessage().getContentRaw().startsWith(BulletBot.getInstance().getCommandClient().getPrefix())) {
 			event.getMessage().delete().queue();
 		}
 	}

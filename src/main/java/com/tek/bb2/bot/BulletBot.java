@@ -6,6 +6,7 @@ import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.tek.bb2.bot.commands.AgreeCommand;
 import com.tek.bb2.bot.commands.CommandErrorHandler;
+import com.tek.bb2.bot.commands.HelpCommand;
 import com.tek.bb2.bot.commands.IDontWantCommand;
 import com.tek.bb2.bot.commands.IWantCommand;
 import com.tek.bb2.bot.commands.InviteCommand;
@@ -24,6 +25,7 @@ public class BulletBot {
 	private Config config;
 	
 	private JDA jda;
+	private CommandClient commandClient;
 
 	public BulletBot(Config config) {
 		this.config = config;
@@ -44,16 +46,13 @@ public class BulletBot {
 		commandClientBuilder.addCommands(new AgreeCommand(), new IWantCommand(), new IDontWantCommand(), new InviteCommand());
 		
 		//FIX HELP MENU
-		commandClientBuilder.setHelpConsumer(event -> {
-			event.getMessage().delete().queue();
-			event.reply("Sent the help menu in your DMs");
-		});
+		commandClientBuilder.setHelpConsumer(new HelpCommand());
 		
 		//ADD ERROR HANDLER FOR MORE USER FRIENDLY RESPONSES
 		commandClientBuilder.setListener(new CommandErrorHandler());
 		
 		//BUILD COMMAND HANDLER
-		CommandClient commandClient = commandClientBuilder.build();
+		commandClient = commandClientBuilder.build();
 		
 		//JDA
 		JDABuilder jdaBuilder = new JDABuilder(config.getToken());
@@ -81,6 +80,10 @@ public class BulletBot {
 	
 	public JDA getJda() {
 		return jda;
+	}
+	
+	public CommandClient getCommandClient() {
+		return commandClient;
 	}
 	
 	public static BulletBot getInstance() {
