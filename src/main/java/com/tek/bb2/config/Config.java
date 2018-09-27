@@ -12,24 +12,32 @@ import org.json.JSONObject;
 
 public class Config {
 	
-	private String token, owner, guild, prefix, presence, welcomeChannel, optionalRolesChannel, memberRole, timeoutRole, modRole, adminRole;
-	private List<String> commandChannels, requestableRoles;
+	private String token, owner, guild, prefix, presence, welcomeChannel, optionalRolesChannel, deletedMessagesChannel, channelRequestsChannel, gamingCategory, memberRole, timeoutRole, modRole, adminRole;
+	private List<String> commandChannels, requestableRoles, giveawayHosts;
 	
 	private Config(JSONObject config) {
-		if(config.has("token")) {
-			token = config.getString("token");
-			owner = config.getString("owner");
-			guild = config.getString("guild");
-			prefix = config.getString("prefix");
-			presence = config.getString("presence");
-			welcomeChannel = config.getString("welcomeChannel");
-			optionalRolesChannel = config.getString("optionalRoles");
-			memberRole = config.getString("memberRole");
-			timeoutRole = config.getString("timeoutRole");
-			modRole = config.getString("modRole");
-			adminRole = config.getString("adminRole");
-			commandChannels = config.getJSONArray("commandChannels").toList().stream().map((o) -> (String)o).collect(Collectors.toList());
-			requestableRoles = config.getJSONArray("requestableRoles").toList().stream().map((o) -> (String)o).collect(Collectors.toList());
+		try{
+			if(config.has("token")) {
+				token = config.getString("token");
+				owner = config.getString("owner");
+				guild = config.getString("guild");
+				prefix = config.getString("prefix");
+				presence = config.getString("presence");
+				welcomeChannel = config.getString("welcomeChannel");
+				optionalRolesChannel = config.getString("optionalRolesChannel");
+				deletedMessagesChannel = config.getString("deletedMessagesChannel");
+				channelRequestsChannel = config.getString("channelRequestsChannel");
+				gamingCategory = config.getString("gamingCategory");
+				memberRole = config.getString("memberRole");
+				timeoutRole = config.getString("timeoutRole");
+				modRole = config.getString("modRole");
+				adminRole = config.getString("adminRole");
+				commandChannels = config.getJSONArray("commandChannels").toList().stream().map((o) -> (String)o).collect(Collectors.toList());
+				requestableRoles = config.getJSONArray("requestableRoles").toList().stream().map((o) -> (String)o).collect(Collectors.toList());
+				giveawayHosts = config.getJSONArray("giveawayHosts").toList().stream().map((o) -> (String)o).collect(Collectors.toList());
+			}
+		}catch(Exception e) {
+			token = null;
 		}
 	}
 	
@@ -65,6 +73,18 @@ public class Config {
 		return optionalRolesChannel;
 	}
 	
+	public String getDeletedMessagesChannel() {
+		return deletedMessagesChannel;
+	}
+	
+	public String getChannelRequestsChannel() {
+		return channelRequestsChannel;
+	}
+	
+	public String getGamingCategory() {
+		return gamingCategory;
+	}
+	
 	public String getMemberRole() {
 		return memberRole;
 	}
@@ -87,6 +107,10 @@ public class Config {
 	
 	public List<String> getRequestableRoles() {
 		return requestableRoles;
+	}
+	
+	public List<String> getGiveawayHosts() {
+		return giveawayHosts;
 	}
 	
 	public static Config load(String configPath) {

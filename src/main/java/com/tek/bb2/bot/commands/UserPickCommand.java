@@ -12,7 +12,7 @@ import net.dv8tion.jda.core.entities.Role;
 public class UserPickCommand extends BotCommand {
 
 	public UserPickCommand() {
-		super("userpick", "Picks a random user within a role", "[Role Name]", CommandCategories.UTILITY, null);
+		super("userpick", "Picks a random user within a role", "[role]", CommandCategories.UTILITY, null);
 	}
 
 	@Override

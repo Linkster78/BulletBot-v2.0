@@ -8,17 +8,21 @@ import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.tek.bb2.bot.commands.AgreeCommand;
-import com.tek.bb2.bot.commands.CommandErrorHandler;
+import com.tek.bb2.bot.commands.ClearCommand;
+import com.tek.bb2.bot.commands.CommandMessageHandler;
 import com.tek.bb2.bot.commands.HelpCommand;
 import com.tek.bb2.bot.commands.IDontWantCommand;
 import com.tek.bb2.bot.commands.IWantCommand;
 import com.tek.bb2.bot.commands.InviteCommand;
 import com.tek.bb2.bot.commands.PullCommand;
+import com.tek.bb2.bot.commands.ShutdownCommand;
 import com.tek.bb2.bot.commands.UserInfoCommand;
 import com.tek.bb2.bot.commands.UserPickCommand;
+import com.tek.bb2.bot.commands.VoiceChannelCommand;
 import com.tek.bb2.bot.events.GlobalEventListener;
 import com.tek.bb2.config.Config;
 import com.tek.bb2.log.ClientLogger;
+import com.tek.bb2.storage.Storage;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -34,6 +38,7 @@ public class BulletBot {
 	private JDA jda;
 	private CommandClient commandClient;
 	private EventWaiter eventWaiter;
+	private Storage storage;
 
 	public BulletBot(Config config) {
 		this.config = config;
@@ -51,19 +56,27 @@ public class BulletBot {
 		commandClientBuilder.setGame(Game.listening(config.getPresence()));
 		
 		//REGISTER COMMANDS
+		//UTILITY
 		commandClientBuilder.addCommand(new AgreeCommand());
-		commandClientBuilder.addCommand(new IWantCommand());
-		commandClientBuilder.addCommand(new IDontWantCommand());
-		commandClientBuilder.addCommand(new InviteCommand());
 		commandClientBuilder.addCommand(new UserPickCommand());
 		commandClientBuilder.addCommand(new UserInfoCommand());
+		commandClientBuilder.addCommand(new VoiceChannelCommand());
+		commandClientBuilder.addCommand(new InviteCommand());
+		//ROLES
+		commandClientBuilder.addCommand(new IWantCommand());
+		commandClientBuilder.addCommand(new IDontWantCommand());
+		//GIVEAWAY
 		commandClientBuilder.addCommand(new PullCommand());
+		//MODERATION
+		commandClientBuilder.addCommand(new ClearCommand());
+		//OWNER
+		commandClientBuilder.addCommand(new ShutdownCommand());
 		
 		//FIX HELP MENU
 		commandClientBuilder.setHelpConsumer(new HelpCommand());
 		
 		//ADD ERROR HANDLER FOR MORE USER FRIENDLY RESPONSES
-		commandClientBuilder.setListener(new CommandErrorHandler());
+		commandClientBuilder.setListener(new CommandMessageHandler());
 		
 		//BUILD COMMAND HANDLER
 		commandClient = commandClientBuilder.build();
@@ -85,6 +98,14 @@ public class BulletBot {
 			
 			ClientLogger.log(BulletBot.class, "Failed to log in");
 		}
+		
+		//LOAD STORAGE
+		storage = Storage.load("storage.json");
+	}
+	
+	public void shutdown() {
+		storage.shutdown();
+		jda.shutdown();
 	}
 	
 	public Guild getGuild() {
@@ -124,6 +145,10 @@ public class BulletBot {
 	
 	public EventWaiter getEventWaiter() {
 		return eventWaiter;
+	}
+	
+	public Storage getStorage() {
+		return storage;
 	}
 	
 	public static BulletBot getInstance() {

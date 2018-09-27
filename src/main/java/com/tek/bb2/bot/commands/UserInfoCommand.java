@@ -8,7 +8,7 @@ import java.util.Optional;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.tek.bb2.bot.BulletBot;
 import com.tek.bb2.util.CommandCategories;
-import com.tek.bb2.util.WordUtil;
+import com.tek.bb2.util.TextUtil;
 
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Member;
@@ -18,7 +18,7 @@ import net.dv8tion.jda.core.entities.Role;
 public class UserInfoCommand extends BotCommand {
 
 	public UserInfoCommand() {
-		super("userinfo", "Displays information about the user", "[@Mention]", CommandCategories.UTILITY, BulletBot.getInstance().getConfig().getCommandChannels(), "ui");
+		super("userinfo", "Displays information about the user", "[@mention]", CommandCategories.UTILITY, BulletBot.getInstance().getConfig().getCommandChannels(), "ui");
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class UserInfoCommand extends BotCommand {
 		profileBuilder.addField("Nickname", member.getNickname() == null ? "None" : member.getEffectiveName(), true);
 		profileBuilder.addField("Account Creation Time", member.getUser().getCreationTime().format(dtf), true);
 		profileBuilder.addField("Join Time", member.getJoinDate().format(dtf), true);
-		profileBuilder.addField("Status", WordUtil.capitalize(member.getOnlineStatus().name()), true);
+		profileBuilder.addField("Status", TextUtil.capitalize(member.getOnlineStatus().name()), true);
 		Optional<Role> highestRole = member.getRoles().stream().max(Comparator.comparing(Role::getPosition));
 		profileBuilder.addField("Highest Role", highestRole.isPresent() ? highestRole.get().getName() : "None", true);
 		

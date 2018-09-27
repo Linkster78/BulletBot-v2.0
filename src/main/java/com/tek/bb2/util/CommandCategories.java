@@ -6,13 +6,17 @@ public class CommandCategories {
 	
 	public static Category
 		UTILITY,
+		ROLES,
 		GIVEAWAY,
-		ROLES;
+		MODERATION,
+		OWNER;
 	
 	static {
 		UTILITY = new Category("Utility");
-		GIVEAWAY = new Category("Giveaway");
 		ROLES = new Category("Roles");
+		GIVEAWAY = new Category("Giveaway");
+		MODERATION = new Category("Moderation");
+		OWNER = new Category("Owner");
 	}
 	
 }
