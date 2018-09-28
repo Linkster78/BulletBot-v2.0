@@ -1,4 +1,4 @@
-package com.tek.bb2.storage;
+package com.tek.bb2.addons;
 
 import java.util.LinkedList;
 import java.util.Queue;

@@ -14,6 +14,8 @@ public class CommandMessageHandler implements CommandListener{
 		if(event.getMessage().getContentRaw().startsWith(BulletBot.getInstance().getCommandClient().getPrefix())) {
 			event.getMessage().delete().queue();
 		}else {
+			if(event.getMessage().getContentRaw().startsWith("+")) return;
+			
 			CachedMessage messageContent = new CachedMessage(event.getMessage());
 			
 			Storage storage = BulletBot.getInstance().getStorage();

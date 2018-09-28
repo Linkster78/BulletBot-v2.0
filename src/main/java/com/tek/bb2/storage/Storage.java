@@ -12,11 +12,14 @@ import java.util.stream.Collectors;
 
 import org.json.JSONObject;
 
+import com.tek.bb2.addons.UserVoiceChannel;
+
 public class Storage {
 	
 	private ArrayList<String> leftTimeouts;
 	private ArrayList<CachedMessage> messageCache;
 	private ArrayList<UserVoiceChannel> userChannels;
+	private RequestManager requestManager;
 	
 	private Storage(JSONObject json) {
 		if(json.has("leftTimeouts")) {
@@ -27,6 +30,7 @@ public class Storage {
 		
 		messageCache = new ArrayList<CachedMessage>();
 		userChannels = new ArrayList<UserVoiceChannel>();
+		requestManager = new RequestManager();
 	}
 	
 	public JSONObject encode() {
@@ -74,6 +78,10 @@ public class Storage {
 		if(message.isPresent()) messageCache.remove(message.get());
 		
 		return message;
+	}
+	
+	public RequestManager getRequestManager() {
+		return requestManager;
 	}
 	
 	public Optional<UserVoiceChannel> getUserChannel(String id) {

@@ -3,10 +3,10 @@ package com.tek.bb2.bot.events;
 import java.awt.Color;
 import java.util.Optional;
 
+import com.tek.bb2.addons.UserVoiceChannel;
 import com.tek.bb2.bot.BulletBot;
 import com.tek.bb2.storage.CachedMessage;
 import com.tek.bb2.storage.Storage;
-import com.tek.bb2.storage.UserVoiceChannel;
 import com.tek.bb2.util.TextUtil;
 
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -78,6 +78,38 @@ public class GlobalEventListener extends ListenerAdapter{
 		Optional<CachedMessage> message = BulletBot.getInstance().getStorage().getCachedMessage(event.getMessageId());
 		
 		if(message.isPresent()) {
+			TextChannel deletedMessagesChannel = event.getGuild().getTextChannelById(BulletBot.getInstance().getConfig().getDeletedMessagesChannel());
+			Member member = event.getGuild().getMemberById(message.get().getAuthorId());
+			
+			EmbedBuilder dmBuilder = new EmbedBuilder();
+			dmBuilder.setColor(Color.red);
+			dmBuilder.setAuthor("Edited Message", member.getUser().getAvatarUrl(), member.getUser().getAvatarUrl());
+			dmBuilder.setThumbnail(member.getUser().getAvatarUrl());
+			dmBuilder.addField("Message Author", member.getEffectiveName() + "#" + member.getUser().getDiscriminator(), true);
+			dmBuilder.addField("Message Channel", "#" + event.getChannel().getName(), true);
+			dmBuilder.addField("Message Author ID", member.getUser().getId(), true);
+			dmBuilder.addField("Message ID", message.get().getId(), true);
+			dmBuilder.addField("Old Message Text", message.get().getMessage().isEmpty() ? "None" : message.get().getMessage(), true);
+			dmBuilder.addField("New Message Text", event.getMessage().getContentRaw().isEmpty() ? "None" : event.getMessage().getContentDisplay(), true);
+			
+			StringBuilder oldStringAttachments = new StringBuilder();
+			message.get().getAttachments().forEach(attachment -> {
+				String name = attachment.getFileName();
+				oldStringAttachments.append("``" + name + "`` *Look further down*\n");
+			});
+			if(oldStringAttachments.length() == 0) oldStringAttachments.append("None");
+			dmBuilder.addField("Old Message Attachments", oldStringAttachments.toString(), true);
+			
+			StringBuilder newStringAttachments = new StringBuilder();
+			event.getMessage().getAttachments().forEach(attachment -> {
+				String name = attachment.getFileName();
+				newStringAttachments.append("``" + name + "`` *Look further down*\n");
+			});
+			if(newStringAttachments.length() == 0) newStringAttachments.append("None");
+			dmBuilder.addField("New Message Attachments", newStringAttachments.toString(), true);
+			
+			deletedMessagesChannel.sendMessage(dmBuilder.build()).queue();
+			
 			CachedMessage newMessage = new CachedMessage(event.getMessage());
 			
 			Storage storage = BulletBot.getInstance().getStorage();

@@ -14,6 +14,7 @@ import com.tek.bb2.bot.commands.HelpCommand;
 import com.tek.bb2.bot.commands.IDontWantCommand;
 import com.tek.bb2.bot.commands.IWantCommand;
 import com.tek.bb2.bot.commands.InviteCommand;
+import com.tek.bb2.bot.commands.OpenRequestsCommand;
 import com.tek.bb2.bot.commands.PullCommand;
 import com.tek.bb2.bot.commands.ShutdownCommand;
 import com.tek.bb2.bot.commands.UserInfoCommand;
@@ -67,6 +68,7 @@ public class BulletBot {
 		commandClientBuilder.addCommand(new IDontWantCommand());
 		//GIVEAWAY
 		commandClientBuilder.addCommand(new PullCommand());
+		commandClientBuilder.addCommand(new OpenRequestsCommand());
 		//MODERATION
 		commandClientBuilder.addCommand(new ClearCommand());
 		//OWNER

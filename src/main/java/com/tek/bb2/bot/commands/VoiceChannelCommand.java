@@ -3,8 +3,8 @@ package com.tek.bb2.bot.commands;
 import java.util.Arrays;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.tek.bb2.addons.UserVoiceChannel;
 import com.tek.bb2.bot.BulletBot;
-import com.tek.bb2.storage.UserVoiceChannel;
 import com.tek.bb2.util.CommandCategories;
 import com.tek.bb2.util.TextUtil;
 
