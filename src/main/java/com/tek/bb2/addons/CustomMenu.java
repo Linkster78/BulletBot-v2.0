@@ -29,15 +29,18 @@ public class CustomMenu extends Menu {
 	private final List<String> choices;
 	private final BiConsumer<ReactionEmote, CustomMenu> action;
 	private final Consumer<Message> finalAction;
-	private String messageId, text;
+	private String text;
+	private boolean terminated;
+	private Message message;
 	
-	protected CustomMenu(EventWaiter waiter, Set<User> users, Set<Role> roles, long timeout, TimeUnit unit, Color color, List<String> choices, BiConsumer<ReactionEmote, CustomMenu> action, Consumer<Message> finalAction) {
+	protected CustomMenu(EventWaiter waiter, Set<User> users, Set<Role> roles, long timeout, TimeUnit unit, Color color, List<String> choices, BiConsumer<ReactionEmote, CustomMenu> action, Consumer<Message> finalAction, String text) {
 		super(waiter, users, roles, timeout, unit);
 		this.color = color;
 		this.choices = choices;
 		this.action = action;
 		this.finalAction = finalAction;
-		this.text = "1";
+		this.text = text;
+		this.terminated = false;
 	}
 
 	@Override
@@ -56,7 +59,7 @@ public class CustomMenu extends Menu {
 	
 	private void initialize(RestAction<Message> ra) {
 		ra.queue(m -> {
-			this.messageId = m.getId();
+			this.message = m;
 			
 			for(int i = 0; i < choices.size(); i++) {
 				Emote emote;
@@ -94,14 +97,22 @@ public class CustomMenu extends Menu {
 			
 			return isValidUser(e.getUser(), e.getGuild());
 		}, (MessageReactionAddEvent event) -> {
+			if(terminated) return;
+			
 			action.accept(event.getReaction().getReactionEmote(), this);
 			
-			display(m);
+			edit(m);
 			
 			this.lastEvent = System.currentTimeMillis();
 			
 			queueReactionEvent(m);
 		}, timeout, unit, () -> finalAction.accept(m));
+	}
+	
+	public void terminate() {
+		this.terminated = true;
+		
+		finalAction.accept(this.getActualMessage());
 	}
 	
 	private Message getMessage()
@@ -119,12 +130,12 @@ public class CustomMenu extends Menu {
 		return color;
 	}
 	
-	public List<String> getChoices() {
-		return choices;
+	public Message getActualMessage() {
+		return message;
 	}
 	
-	public String getMessageId() {
-		return messageId;
+	public List<String> getChoices() {
+		return choices;
 	}
 	
 	public String getText() {
@@ -137,12 +148,14 @@ public class CustomMenu extends Menu {
 		private List<String> choices = new ArrayList<String>();
 		private BiConsumer<ReactionEmote, CustomMenu> action;
 		private Consumer<Message> finalAction = (m) -> {};
+		private String text;
 		
 		@Override
 		public CustomMenu build() {
 			Checks.check(waiter != null, "Must have an EventWaiter");
+			Checks.check(text != null, "There must be a text");
 			
-			return new CustomMenu(waiter, users, roles, timeout, unit, color, choices, action, finalAction);
+			return new CustomMenu(waiter, users, roles, timeout, unit, color, choices, action, finalAction, text);
 		}
 		
 		public Builder setColor(Color color) {
@@ -157,6 +170,11 @@ public class CustomMenu extends Menu {
 		
 		public Builder setFinalAction(Consumer<Message> finalAction) {
 			this.finalAction = finalAction;
+			return this;
+		}
+		
+		public Builder setText(String text) {
+			this.text = text;
 			return this;
 		}
 		

@@ -16,6 +16,7 @@ import com.tek.bb2.bot.commands.IWantCommand;
 import com.tek.bb2.bot.commands.InviteCommand;
 import com.tek.bb2.bot.commands.OpenRequestsCommand;
 import com.tek.bb2.bot.commands.PullCommand;
+import com.tek.bb2.bot.commands.RequestCommand;
 import com.tek.bb2.bot.commands.ShutdownCommand;
 import com.tek.bb2.bot.commands.UserInfoCommand;
 import com.tek.bb2.bot.commands.UserPickCommand;
@@ -69,6 +70,7 @@ public class BulletBot {
 		//GIVEAWAY
 		commandClientBuilder.addCommand(new PullCommand());
 		commandClientBuilder.addCommand(new OpenRequestsCommand());
+		commandClientBuilder.addCommand(new RequestCommand());
 		//MODERATION
 		commandClientBuilder.addCommand(new ClearCommand());
 		//OWNER

@@ -1,11 +1,14 @@
 package com.tek.bb2.storage;
 
+import net.dv8tion.jda.core.entities.User;
+
 public class UserRequest {
 	
-	private String userId, request;
+	private String userId, username, request;
 	
-	public UserRequest(String userId, String request) {
-		this.userId = userId;
+	public UserRequest(User user, String request) {
+		this.userId = user.getId();
+		this.username = user.getName() + "#" + user.getDiscriminator();
 		this.request = request;
 	}
 
@@ -13,8 +16,17 @@ public class UserRequest {
 		return userId;
 	}
 	
+	public String getUsername() {
+		return username;
+	}
+	
 	public String getRequest() {
 		return request;
+	}
+	
+	@Override
+	public String toString() {
+		return "\"**" + request + "**\" from **" + username + "**";
 	}
 	
 }
