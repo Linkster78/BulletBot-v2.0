@@ -7,16 +7,18 @@ import javax.security.auth.login.LoginException;
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
+import com.tek.bb2.api.ServerManager;
 import com.tek.bb2.bot.commands.AgreeCommand;
+import com.tek.bb2.bot.commands.AuthCommand;
 import com.tek.bb2.bot.commands.ClearCommand;
+import com.tek.bb2.bot.commands.CoinFlipCommand;
 import com.tek.bb2.bot.commands.CommandMessageHandler;
 import com.tek.bb2.bot.commands.HelpCommand;
 import com.tek.bb2.bot.commands.IDontWantCommand;
 import com.tek.bb2.bot.commands.IWantCommand;
+import com.tek.bb2.bot.commands.Image2UTFCommand;
 import com.tek.bb2.bot.commands.InviteCommand;
-import com.tek.bb2.bot.commands.OpenRequestsCommand;
 import com.tek.bb2.bot.commands.PullCommand;
-import com.tek.bb2.bot.commands.RequestCommand;
 import com.tek.bb2.bot.commands.ShutdownCommand;
 import com.tek.bb2.bot.commands.UserInfoCommand;
 import com.tek.bb2.bot.commands.UserPickCommand;
@@ -40,6 +42,7 @@ public class BulletBot {
 	private JDA jda;
 	private CommandClient commandClient;
 	private EventWaiter eventWaiter;
+	private ServerManager serverManager;
 	private Storage storage;
 
 	public BulletBot(Config config) {
@@ -67,10 +70,13 @@ public class BulletBot {
 		//ROLES
 		commandClientBuilder.addCommand(new IWantCommand());
 		commandClientBuilder.addCommand(new IDontWantCommand());
+		//FUN
+		commandClientBuilder.addCommand(new Image2UTFCommand());
+		commandClientBuilder.addCommand(new CoinFlipCommand());
+		//WEB
+		commandClientBuilder.addCommand(new AuthCommand());
 		//GIVEAWAY
 		commandClientBuilder.addCommand(new PullCommand());
-		commandClientBuilder.addCommand(new OpenRequestsCommand());
-		commandClientBuilder.addCommand(new RequestCommand());
 		//MODERATION
 		commandClientBuilder.addCommand(new ClearCommand());
 		//OWNER
@@ -105,6 +111,10 @@ public class BulletBot {
 		
 		//LOAD STORAGE
 		storage = Storage.load("storage.json");
+		
+		//LOAD API
+		serverManager = new ServerManager();
+		serverManager.initialize();
 	}
 	
 	public void shutdown() {
@@ -145,6 +155,10 @@ public class BulletBot {
 	
 	public CommandClient getCommandClient() {
 		return commandClient;
+	}
+	
+	public ServerManager getServerManager() {
+		return serverManager;
 	}
 	
 	public EventWaiter getEventWaiter() {

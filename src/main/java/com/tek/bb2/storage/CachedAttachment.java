@@ -1,6 +1,5 @@
 package com.tek.bb2.storage;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 import net.dv8tion.jda.core.entities.Message.Attachment;
@@ -22,18 +21,10 @@ public class CachedAttachment {
 			
 			this.size = is.available();
 			
-			if(this.size > MAX_BYTE_SIZE) {
-				isTooBig = true;
-				return;
-			}
-			
-			isTooBig = false;
-			
-			this.byteContent = new byte[is.available()];
-			
-			is.read(this.byteContent);
-		}catch(IOException e) {
-			e.printStackTrace();
+			this.byteContent = readBytes(is);
+		}catch(Exception e) {
+			this.size = 0;
+			this.byteContent = new byte[0];
 		}
 	}
 	
@@ -51,6 +42,24 @@ public class CachedAttachment {
 	
 	public boolean isTooBig() {
 		return isTooBig;
+	}
+	
+	public byte[] readBytes(InputStream is) {
+		try{
+			int size = is.available();
+		
+			if(size > MAX_BYTE_SIZE) {
+				return new byte[0];
+			}
+			
+			byte[] byteContent = new byte[is.available()];
+			
+			is.read(byteContent);
+			
+			return byteContent;
+		}catch(Exception e) {
+			return new byte[0];
+		}
 	}
 	
 }

@@ -6,7 +6,7 @@ import com.tek.bb2.log.ClientLogger;
 
 public class Launcher {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		Config config = Config.load("config.json");
 		
 		if(config.valid()) {

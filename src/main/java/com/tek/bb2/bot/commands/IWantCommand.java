@@ -1,6 +1,7 @@
 package com.tek.bb2.bot.commands;
 
 import java.util.Arrays;
+import java.util.List;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.tek.bb2.bot.BulletBot;
@@ -19,9 +20,11 @@ public class IWantCommand extends BotCommand {
 	@Override
 	public void commandExecute(CommandEvent event) {
 		if(BulletBot.getInstance().getConfig().getRequestableRoles().stream().anyMatch(s -> s.equalsIgnoreCase(event.getArgs()))) {
-			Role role = event.getGuild().getRolesByName(event.getArgs(), true).get(0);
+			List<Role> roles = event.getGuild().getRolesByName(event.getArgs(), true);
 			
-			event.getGuild().getController().addSingleRoleToMember(event.getMember(), role).queue();
+			if(!roles.isEmpty()) {
+				event.getGuild().getController().addSingleRoleToMember(event.getMember(), roles.get(0)).queue();
+			}
 		}
 		
 		event.getMessage().delete().queue();

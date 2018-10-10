@@ -89,6 +89,7 @@ public class GlobalEventListener extends ListenerAdapter{
 			dmBuilder.addField("Message Channel", "#" + event.getChannel().getName(), true);
 			dmBuilder.addField("Message Author ID", member.getUser().getId(), true);
 			dmBuilder.addField("Message ID", message.get().getId(), true);
+			dmBuilder.addField("Time", TextUtil.getTimeStamp(), true);
 			dmBuilder.addField("Old Message Text", message.get().getMessage().isEmpty() ? "None" : message.get().getMessage(), true);
 			dmBuilder.addField("New Message Text", event.getMessage().getContentRaw().isEmpty() ? "None" : event.getMessage().getContentDisplay(), true);
 			
@@ -138,6 +139,7 @@ public class GlobalEventListener extends ListenerAdapter{
 			dmBuilder.addField("Message Channel", "#" + event.getChannel().getName(), true);
 			dmBuilder.addField("Message Author ID", member.getUser().getId(), true);
 			dmBuilder.addField("Message ID", message.get().getId(), true);
+			dmBuilder.addField("Time", TextUtil.getTimeStamp(), true);
 			dmBuilder.addField("Message Text", message.get().getMessage().isEmpty() ? "None" : message.get().getMessage(), true);
 			
 			StringBuilder stringAttachments = new StringBuilder();

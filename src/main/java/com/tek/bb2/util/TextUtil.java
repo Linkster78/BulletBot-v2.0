@@ -1,5 +1,8 @@
 package com.tek.bb2.util;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class TextUtil {
 	
 	public static String capitalize(String text) {
@@ -33,6 +36,10 @@ public class TextUtil {
 		}catch(Exception e) {
 			return -1;
 		}
+	}
+	
+	public static String getTimeStamp() {
+		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 	}
 	
 }
